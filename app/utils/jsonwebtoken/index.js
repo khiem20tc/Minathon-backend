@@ -1,6 +1,6 @@
 const { sign, verify } = require('jsonwebtoken')
 
-const { PRIVATE_KEY } = require('../../environments')
+require('dotenv').config()
 const { UserEntity } = require('../../models')
 
 /**
@@ -20,7 +20,7 @@ const generateToken = async (user) => {
         {
             _id: user._id
         },
-        PRIVATE_KEY
+        process.env.PRIVATE_KEY
     )
 }
 
@@ -36,11 +36,13 @@ const generateToken = async (user) => {
  */
 
 const verifyToken = async (token) => {
-    const { _id } = await verify(token, PRIVATE_KEY)
+    const { _id } = await verify(token, process.env.PRIVATE_KEY)
     return await UserEntity.findOne({ _id })
 }
 
-module.exports = {
-    generateToken, 
-    verifyToken
-}
+// module.exports = {
+//     generateToken, 
+//     verifyToken
+// }
+
+export default {generateToken, verifyToken}

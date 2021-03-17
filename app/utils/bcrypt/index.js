@@ -1,6 +1,5 @@
-const { hash, compare } = require('bcrypt')
-
-const { SALT } = require('../../environments')
+import { hash, compare } from 'bcrypt'
+require('dotenv').config()
 
 /**
  * This function hash password using bcrypt
@@ -8,7 +7,7 @@ const { SALT } = require('../../environments')
  * @return password after hash - string
 **/
 const hashPassword = async (password) => {
-    return await hash(password, SALT)
+    return await hash(password, process.env.SALT)
 }
 
 /**
@@ -22,7 +21,9 @@ const comparePassword = async (password, hashPassword) => {
     return await compare(password, hashPassword)
 }
 
-module.exports = {
-    hashPassword,
-    comparePassword
-}
+// module.exports = {
+//     hashPassword,
+//     comparePassword
+// }
+
+export default {hashPassword, comparePassword}
