@@ -7,7 +7,7 @@ const participant = mongoose.Schema({
 
 const EventSchema = mongoose.Schema({
     date: {
-        type: Date,
+        type: String,
         required: true
     },
     time: {
@@ -22,7 +22,7 @@ const EventSchema = mongoose.Schema({
         type: String,
         required: true,
     },
-    name: {
+    title: {
         type: String,
         required: true
     },
@@ -53,4 +53,4 @@ const EventSchema = mongoose.Schema({
     }
 })
 
-module.exports = {EventSchema: mongoose.model('event', EventSchema)};
+module.exports = {EventEntity: mongoose.model('event', EventSchema)};

@@ -2,7 +2,7 @@ const { EventEntity } = require('../models');
 
 const create = async(data) => {
     try{
-        await UserEntity.create(data)
+        await EventEntity.create(data)
     } catch (err) {
         return err
     }
@@ -10,7 +10,7 @@ const create = async(data) => {
 
 const read = async(page,limit,filter) => {
     try{
-    let result = await UserEntity.find(filter)
+    let result = await EventEntity.find(filter)
         .sort({_id: -1})
         .skip(page * limit - limit)
         .limit(limit)
@@ -23,7 +23,7 @@ const read = async(page,limit,filter) => {
 
 const update = async(filter,update) => {
     try{
-        await UserEntity.updateOne(filter,update)
+        await EventEntity.updateOne(filter,update)
     } catch (err) {
         return err
     }
@@ -31,7 +31,7 @@ const update = async(filter,update) => {
 
 const remove = async(filter) => {
     try{
-        await UserEntity.deleteOne(filter)
+        await EventEntity.deleteOne(filter)
     } catch (err) {
         return err
     }

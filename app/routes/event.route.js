@@ -10,7 +10,7 @@ router.all('/', function(req, res, next) {
         next()
       });
 
-router.post('/create', EventController.create)
+router.post('/create', checkAuth, EventController.create)
 
 router.get('/get', EventController.get)
 
