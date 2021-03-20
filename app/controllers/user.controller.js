@@ -6,11 +6,18 @@ import { cloudinary } from "../services"
 
 const signUp = async (req, res) => {
     try {
-        const {username,password} = req.body
+        const {firstName,lastName,birthday,gender,
+            address,username,phoneNumber,password} = req.body
         const hashedPassword = await bcrypt.hashPassword(password)
         const new_user = {
-            username: username,
-            password: hashedPassword
+            firstName,
+            lastName,
+            birthday,
+            gender,
+            address,
+            username,
+            password: hashedPassword,
+            phoneNumber
         };
         const user = await UserService.readUser(1,1,{username: new_user.username})
         if (!user[0]) {
@@ -116,11 +123,23 @@ const getInfo = async(req,res) => {
     }
 }
 
+const getMe = async(req,res) => {
+    try{
+        const id = req.user.id
+        const user = await UserService.readUser(1,1,{_id: id})
+        return res.json(user[0])
+    }
+    catch(err){
+        res.json({msg: err});
+    }
+}
+
 export default {
     signUp,
     signIn,
     changePwd,
     setAvt,
     updateInfo,
-    getInfo
+    getInfo,
+    getMe,
 }

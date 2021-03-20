@@ -22,4 +22,6 @@ router.put('/updateInfo', checkAuth, UserController.updateInfo)
 
 router.get('/getInfo/:id', checkAuth, UserController.getInfo)
 
+router.get('/getMe', checkAuth, UserController.getMe)
+
 export default router
