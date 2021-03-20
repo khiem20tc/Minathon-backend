@@ -39,6 +39,10 @@ const EventSchema = mongoose.Schema({
         type: mongoose.Types.ObjectId,
         required: true
     },
+    hostNumberPhone: {
+        type: String,
+        required: true
+    },
     description: {
         type: String,
         required: true

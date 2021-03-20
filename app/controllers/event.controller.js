@@ -12,6 +12,7 @@ const create = async(req,res) => {
         title,
         category,
         max,
+        hostNumberPhone,
         description,
         keywords,
     } = req.body
@@ -26,6 +27,7 @@ const create = async(req,res) => {
         category,
         max,
         host,
+        hostNumberPhone,
         description,
         keywords,
         participant_subschema
@@ -35,7 +37,6 @@ const create = async(req,res) => {
         time,
         address})
     new_event = new_event[0]
-    console.log(new_event )
     await UserService.updateUser(
         { _id: host },
         { $push: { myEvent: new_event._id } }
@@ -201,7 +202,31 @@ const getMyListEvent = async(req,res) => {
                         }
                     }
             let event_element = await EventService.readDetail(1,1,{_id: user[0].myEvent[i]})
-            final_event.push(event_element[0])
+            let isAccept = false
+            let k
+            for (k=0;k<event[0].participant_subschema.length;k++){
+                if(event[0].participant_subschema[k]==user[0]._id)
+                isAccept = true
+            }
+            if (event[0].host == id || isAccept)
+            {
+                final_event.push(event_element[0])
+            }
+            else {
+                final_event.push({
+                    date: event_element[0].date,
+            time: event_element[0].time,
+            address: event_element[0].address,
+            district: event_element[0].district,
+            title: event_element[0].title,
+            category: event_element[0].category, 
+            max: event_element[0].max,
+            host: event_element[0].host,
+            description: event_element[0].description,
+            keywords: event_element[0].keywords,
+                })
+            }
+            
         }
         return res.json(final_event)
     }
