@@ -80,11 +80,13 @@ const accept = async(req,res) => {
         if (parseInt(event[0].host) === parseInt(host_id)) {
             let participantList = event[0].participant_subschema
             let i 
+            let number_persion = 0
             for (i=0;i<participantList.length;i++) {
-                let number_persion = 0
                 if (participantList[i].isAccepted===true){
                     number_persion++
                 }
+            }
+            for (i=0;i<participantList.length;i++) {
                 if (parseInt(number_persion)<parseInt(event[0].max)) console.log("true")
                 else {console.log("false")}
                 if(parseInt(participantList[i].user)===parseInt(user_id) && (parseInt(number_persion)<parseInt(event[0].max))){
