@@ -89,9 +89,38 @@ const setAvt = async (req,res) => {
     }
 }
 
+const updateInfo = async(req,res) => {
+    try{
+        let {phoneNumber, aboutMe} = req.body
+        const id_user = req.user.id
+        await UserService.updateUser({_id: id_user},{phoneNumber, aboutMe})
+        return res.json({msg: "Update your info succefully"})
+    }
+    catch(err){
+        res.json({msg: err});
+    } 
+}
+
+const getInfo = async(req,res) => {
+    try {
+        const id = req.params.id
+        const user = await UserService.readUser(1,1,{_id: id})
+        return res.json({
+            username: user[0].username,
+            avatar: user[0].avatar,
+            aboutMe: user[0].aboutMe
+        })
+    }
+    catch (err) {
+        res.json({msg: err});
+    }
+}
+
 export default {
     signUp,
     signIn,
     changePwd,
-    setAvt
+    setAvt,
+    updateInfo,
+    getInfo
 }

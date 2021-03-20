@@ -18,4 +18,8 @@ router.put('/changepwd', checkAuth, UserController.changePwd)
 
 router.put('/setAvt', checkAuth, UserController.setAvt)
 
+router.put('/updateInfo', checkAuth, UserController.updateInfo)
+
+router.get('/getInfo/:id', checkAuth, UserController.getInfo)
+
 export default router
