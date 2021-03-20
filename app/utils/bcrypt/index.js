@@ -7,7 +7,7 @@ require('dotenv').config()
  * @return password after hash - string
 **/
 const hashPassword = async (password) => {
-    return await hash(password, process.env.SALT)
+    return await hash(password, parseInt(process.env.SALT))
 }
 
 /**

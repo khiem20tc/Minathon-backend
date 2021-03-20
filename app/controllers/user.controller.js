@@ -1,5 +1,6 @@
 import { UserService } from "../services"
 import { bcrypt, jwt } from "../utils"
+import { cloudinary } from "../services"
 
 // const { generateToken, verifyToken, hashPassword, comparePassword } = require('../utils')
 
@@ -46,8 +47,36 @@ const changePwd = async (req, res) => {
     res.json(req.user)
 }
 
+const setAvt = async (req,res) => {
+    try {
+    let {icon} = req.body
+    let id = req.user.id
+    console.log(id)
+    if (icon) {
+        let uploadIcon = null;
+        try {
+          uploadIcon = await cloudinary.upload(icon, {
+            // public_id: `Icon_${symbols}`,
+            // upload_preset: "network_icon",
+          });
+        } catch (error) {
+            res.json({msg: err});
+        }
+    
+        icon = uploadIcon.url;
+        await UserService.updateUser(id,icon)
+        return res.json(icon)
+      }
+    return res.json({icon})
+    }
+    catch (err) {
+        res.json({msg: err});
+    }
+}
+
 export default {
     signUp,
     signIn,
-    changePwd
+    changePwd,
+    setAvt
 }

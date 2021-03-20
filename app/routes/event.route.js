@@ -1,5 +1,5 @@
 import { Router } from "express";
-import { UserController } from "../controllers"
+import { EventController } from "../controllers"
 import { checkAuth } from "../middlewares/"
 
 var router = Router()
@@ -10,12 +10,8 @@ router.all('/', function(req, res, next) {
         next()
       });
 
-router.post('/signup', UserController.signUp)
+router.post('/create', EventController.create)
 
-router.post('/signin', UserController.signIn)
-
-router.put('/changepwd', checkAuth, UserController.changePwd)
-
-router.put('/setAvt', checkAuth, UserController.setAvt)
+router.get('/get', EventController.get)
 
 export default router
