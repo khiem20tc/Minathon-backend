@@ -37,9 +37,20 @@ const remove = async(filter) => {
     }
 }
 
+const getTotalNumber = async(filter) => {
+    try {
+        const total = await EventEntity.countDocuments(filter)
+        return total
+    }
+    catch (err) {
+        return err
+    }
+}
+
 export default {
     create,
     read,
     update,
-    remove
+    remove,
+    getTotalNumber
 }
