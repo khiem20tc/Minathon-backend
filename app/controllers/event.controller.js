@@ -58,10 +58,16 @@ const get = async(req,res) => {
 
 const interact = async(req,res) => {
     try{
-        const user_id = req.user.id
-        const event_id = req.params.id
+        const user_id = Types.ObjectId(req.user.id)
+        const event_id = Types.ObjectId(req.params.id)
         console.log("user_id",user_id)
         console.log("event_id",event_id)
+        
+        await EventService.update(
+            { _id: event_id },
+            { $push: { participant_subschema: {user: user_id} } }
+         )
+        return res.json({msg: "Requested"})
     }
     catch (err) {
         return res.json({err})

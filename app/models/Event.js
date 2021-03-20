@@ -3,7 +3,7 @@ const mongoose = require('mongoose');
 const participant = mongoose.Schema({
     user: {type: mongoose.Types.ObjectId, ref: "User", require: true},
     isAccepted: {type: Boolean, default: false}
-})
+}, {_id: false})
 
 const EventSchema = mongoose.Schema({
     date: {
@@ -53,4 +53,7 @@ const EventSchema = mongoose.Schema({
     }
 })
 
-module.exports = {EventEntity: mongoose.model('event', EventSchema)};
+module.exports = {
+    EventEntity: mongoose.model('event', EventSchema),
+    participant: mongoose.model('participant', participant)
+};

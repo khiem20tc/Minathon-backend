@@ -1,7 +1,8 @@
 const { UserEntity } = require('./User')
-const { EventEntity } = require('./Event')
+const { EventEntity, participant } = require('./Event')
 
 module.exports = {
     UserEntity,
-    EventEntity
+    EventEntity,
+    participant
 }

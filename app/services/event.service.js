@@ -1,4 +1,4 @@
-const { EventEntity } = require('../models');
+const { EventEntity, participant } = require('../models');
 
 const create = async(data) => {
     try{
