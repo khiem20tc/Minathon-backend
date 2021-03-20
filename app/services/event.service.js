@@ -15,6 +15,35 @@ const read = async(page,limit,filter) => {
         .skip(page * limit - limit)
         .limit(limit)
         .lean();
+    let i
+    let new_result = []
+    for (i=0;i<result.length;i++){
+        new_result.push({
+            date: result[i].data,
+            time: result[i].time,
+            address: result[i].address,
+            district: result[i].district,
+            title: result[i].title,
+            category: result[i].category, 
+            max: result[i].max,
+            host: result[i].host,
+            description: result[i].description,
+            keywords: result[i].keywords,
+        })
+    }
+    return new_result
+    } catch (err){
+        return err
+    }
+}
+
+const readDetail = async(page,limit,filter) => {
+    try{
+    let result = await EventEntity.find(filter)
+        .sort({_id: -1})
+        .skip(page * limit - limit)
+        .limit(limit)
+        .lean();
     return result
     } catch (err){
         return err
@@ -50,6 +79,7 @@ const getTotalNumber = async(filter) => {
 export default {
     create,
     read,
+    readDetail,
     update,
     remove,
     getTotalNumber

@@ -56,6 +56,20 @@ const get = async(req,res) => {
     }
 }
 
+const getDetail = async(req,res) => {
+    try{
+        let { page, limit, ...filter } = req.query;
+        page = parseInt(page);
+        limit = parseInt(limit);
+        const result = await EventService.readDetail(page,limit,filter)
+        const totalItems = await EventService.getTotalNumber(filter);
+        return res.json({result: result, totalItems: totalItems})
+    }
+    catch (err) {
+        return res.json({err})
+    }
+}
+
 const interact = async(req,res) => {
     try{
         const user_id = Types.ObjectId(req.user.id)
@@ -152,6 +166,7 @@ const remove = async(req,res) => {
 export default {
     create,
     get,
+    getDetail,
     interact,
     accept,
     remove
