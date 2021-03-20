@@ -34,7 +34,9 @@ const UserSchema = mongoose.Schema({
     aboutMe: {
         type: String
     },
-
+    myEvent: {
+        type: Array
+    }
 })
 
 module.exports = {UserEntity: mongoose.model('user', UserSchema)};

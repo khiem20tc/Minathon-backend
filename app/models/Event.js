@@ -2,7 +2,8 @@ const mongoose = require('mongoose');
 
 const participant = mongoose.Schema({
     user: {type: mongoose.Types.ObjectId, ref: "User", require: true},
-    isAccepted: {type: Boolean, default: false}
+    isAccepted: {type: Boolean, default: false},
+    phoneNumber: {type: Number}
 }, {_id: false})
 
 const EventSchema = mongoose.Schema({
