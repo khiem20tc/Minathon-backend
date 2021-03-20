@@ -12,6 +12,12 @@ const UserSchema = mongoose.Schema({
     },
     avatar: {
         type: Object
+    },
+    phoneNumber: {
+        type: String
+    },
+    aboutMe: {
+        type: String
     }
 })
 

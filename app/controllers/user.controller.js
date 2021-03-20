@@ -32,7 +32,6 @@ const signIn = async (req, res) => {
         else {
             if (await bcrypt.comparePassword(password, user[0].password)){
                 const token = await jwt.generateToken(user[0])
-                console.log(token)
                 return res.json({token: token, user: user[0]})}
             else {
                 return res.json({msg: "Wrong password. Please try again"})
@@ -44,7 +43,23 @@ const signIn = async (req, res) => {
     }
 }
 const changePwd = async (req, res) => {
-    res.json(req.user)
+    try {
+        let {oldPassword, newPassword} = req.body
+        const id_user = req.user.id
+        const user = await UserService.readUser(1,1,{_id: id_user})
+        const isMatch = await bcrypt.comparePassword(oldPassword, user[0].password)
+        if (isMatch) {
+            let newhashedPassword = await bcrypt.hashPassword(newPassword)
+            await UserService.updateUser({_id: id_user},{password: newhashedPassword})
+            return res.json({msg: "Change your password succesfully"})
+        }
+        else {
+            return res.json({msg: "Cant change your password. Please try again!!"})
+        }
+    }
+    catch (err) {
+
+    }
 }
 
 const setAvt = async (req,res) => {
