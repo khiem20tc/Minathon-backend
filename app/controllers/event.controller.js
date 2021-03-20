@@ -1,5 +1,6 @@
 import { EventService } from "../services"
 import { Types } from 'mongoose'
+const { EventEntity, participant } = require('../models');
 
 const create = async(req,res) => {
     try {
@@ -60,14 +61,46 @@ const interact = async(req,res) => {
     try{
         const user_id = Types.ObjectId(req.user.id)
         const event_id = Types.ObjectId(req.params.id)
-        console.log("user_id",user_id)
-        console.log("event_id",event_id)
-        
         await EventService.update(
             { _id: event_id },
             { $push: { participant_subschema: {user: user_id} } }
          )
         return res.json({msg: "Requested"})
+    }
+    catch (err) {
+        return res.json({err})
+    }
+}
+
+const accept = async(req,res) => {
+    try {
+        const host_id = Types.ObjectId(req.user.id)
+        const event_id = Types.ObjectId(req.params.id)
+        const user_id = Types.ObjectId(req.query.user_id)
+        const event = await EventService.read(1,1,{_id: event_id}) 
+        if (parseInt(event[0].host) === parseInt(host_id)) {
+            let participantList = event[0].participant_subschema
+            let i 
+            for (i=0;i<participantList.length;i++) {
+                let number_persion = 0
+                if (participantList[i].isAccepted===true){
+                    number_persion++
+                }
+                if(parseInt(participantList[i].user)===parseInt(user_id) && number_persion<event[0].max){
+                    participantList[i].isAccepted = true
+                }
+            }
+            await EventService.update(
+                { _id: event_id },
+                { participant_subschema: participantList,
+                        status: true
+            }
+             )
+             return res.json({msg: "OK"})
+        }
+        else {
+            return res.json({msg:"User is not permission"})
+        }
     }
     catch (err) {
         return res.json({err})
@@ -96,5 +129,6 @@ export default {
     create,
     get,
     interact,
+    accept,
     remove
 }
