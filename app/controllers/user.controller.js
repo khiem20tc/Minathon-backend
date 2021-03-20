@@ -33,6 +33,7 @@ const signIn = async (req, res) => {
     try {
         const {username,password} = req.body
         const user = await UserService.readUser(1,1,{username: username})
+        console.log(user)
         if (!user[0]) {
             return res.json({msg: "User is not exist"})
         }
@@ -73,7 +74,6 @@ const setAvt = async (req,res) => {
     try {
     let {icon} = req.body
     let id = req.user.id
-    console.log(id)
     if (icon) {
         let uploadIcon = null;
         try {
@@ -86,7 +86,7 @@ const setAvt = async (req,res) => {
         }
     
         icon = uploadIcon.url;
-        await UserService.updateUser(id,icon)
+        await UserService.updateUser({_id: id},{avatar: icon})
         return res.json(icon)
       }
     return res.json({icon})
