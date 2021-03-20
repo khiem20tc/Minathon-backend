@@ -14,4 +14,8 @@ router.post('/create', checkAuth, EventController.create)
 
 router.get('/get', EventController.get)
 
+router.put('/interact/:id', checkAuth, EventController.interact)
+
+router.delete('/delete/:id', checkAuth, EventController.remove)
+
 export default router

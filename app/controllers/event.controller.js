@@ -56,7 +56,39 @@ const get = async(req,res) => {
     }
 }
 
+const interact = async(req,res) => {
+    try{
+        const user_id = req.user.id
+        const event_id = req.params.id
+        console.log("user_id",user_id)
+        console.log("event_id",event_id)
+    }
+    catch (err) {
+        return res.json({err})
+    }
+}
+
+const remove = async(req,res) => {
+    try{
+        const host_id = Types.ObjectId(req.user.id)
+        const event_id = Types.ObjectId(req.params.id)
+        const event = await EventService.read(1,1,{_id: event_id}) 
+        if (parseInt(event[0].host) === parseInt(host_id)) {
+            await EventService.remove({_id: event_id})
+            return res.json({msg:"Deleted this event"})
+        }
+        else {
+            return res.json({msg:"User is not permission"})
+        }
+    }
+    catch (err) {
+        return res.json({err})
+    }
+}
+
 export default {
     create,
-    get
+    get,
+    interact,
+    remove
 }
