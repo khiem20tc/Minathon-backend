@@ -235,6 +235,17 @@ const getMyListEvent = async(req,res) => {
     }
 }
 
+const getDetailInfo = async(req,res) => {
+    try{
+        const _id = req.params.id
+        const result = await EventService.getDetailInfo(_id)
+        return res.json(result)
+    }
+    catch(err){
+        return res.json({err})
+    }
+}
+
 export default {
     create,
     get,
@@ -242,5 +253,6 @@ export default {
     interact,
     accept,
     remove,
-    getMyListEvent
+    getMyListEvent,
+    getDetailInfo
 }

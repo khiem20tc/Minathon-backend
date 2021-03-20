@@ -24,4 +24,6 @@ router.delete('/delete/:id', checkAuth, EventController.remove)
 
 router.get('/getMyListEvent', checkAuth, EventController.getMyListEvent)
 
+router.get('/getDetailInfo/:id', checkAuth, EventController.getDetailInfo)
+
 export default router

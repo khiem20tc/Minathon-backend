@@ -1,4 +1,5 @@
 const { EventEntity, participant } = require('../models');
+import { Types } from 'mongoose'
 
 const create = async(data) => {
     try{
@@ -50,6 +51,59 @@ const readDetail = async(page,limit,filter) => {
     }
 }
 
+const getDetailInfo = async (id) => {
+    try{
+        let event = await EventEntity.aggregate([
+            { $match: {_id: Types.ObjectId(id)} },
+            {
+              $lookup:
+              {
+                from: "users",
+                localField: "participant_subschema.user",
+                foreignField: "_id",
+                as: "userInfo"
+              }
+            },
+            // {
+            //     $unwind: "$network"
+            // }
+        ])
+        let i
+        let new_event = []  
+        for(i=0;i<event.length;i++){
+            let j
+            let new_userInfo = []
+            for (j=0;j<event[i].userInfo.length;j++){
+                new_userInfo.push({
+                    name: event[i].userInfo[j].firstName + event[i].userInfo[j].lastName,
+                    aboutMe: event[i].userInfo[j].aboutMe,
+                    avatar: event[i].userInfo[j].avatar
+                })
+            }
+            new_event.push({
+                    _id: event[i]._id,
+                    status: event[i]._status,
+                    date: event[i].date,
+                    time: event[i].time,
+                    address: event[i].address,
+                    district: event[i].district,
+                    title: event[i].title,
+                    category: event[i].category,
+                    max: event[i].max,
+                    host: event[i].host,
+                    description: event[i].description,
+                    keywords: event[i].keywords,
+                    participant_subschema: event[i].participant_subschema,
+                    userInfo: new_userInfo
+            })
+        }
+          return new_event;
+    }
+    catch(err) {
+        return err
+    }
+}
+
 const update = async(filter,update) => {
     try{
         await EventEntity.updateOne(filter,update)
@@ -82,5 +136,6 @@ export default {
     readDetail,
     update,
     remove,
-    getTotalNumber
+    getTotalNumber,
+    getDetailInfo
 }
