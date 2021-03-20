@@ -60,11 +60,17 @@ const interact = async(req,res) => {
     try{
         const user_id = Types.ObjectId(req.user.id)
         const event_id = Types.ObjectId(req.params.id)
+        const event = await EventService.read(1,1,{_id: event_id}) 
+        if (event[0].status===false){
         await EventService.update(
             { _id: event_id },
             { $push: { participant_subschema: {user: user_id} } }
          )
         return res.json({msg: "Requested"})
+        }
+        else {
+            return res.json({msg: "This event was reach max persion number"})
+        }
     }
     catch (err) {
         return res.json({err})
@@ -87,19 +93,31 @@ const accept = async(req,res) => {
                 }
             }
             for (i=0;i<participantList.length;i++) {
-                if (parseInt(number_persion)<parseInt(event[0].max)) console.log("true")
-                else {console.log("false")}
+                // if (parseInt(number_persion)<parseInt(event[0].max)) console.log("true")
+                // else {console.log("false")}
                 if(parseInt(participantList[i].user)===parseInt(user_id) && (parseInt(number_persion)<parseInt(event[0].max))){
                     participantList[i].isAccepted = true
                 }
             }
             await EventService.update(
                 { _id: event_id },
-                { participant_subschema: participantList,
-                        status: true
+                { participant_subschema: participantList
             }
              )
-             return res.json({msg: "OK"})
+             //block new request to join when number accepted persion is max
+            number_persion = 0
+            for (i=0;i<participantList.length;i++) {
+                if (participantList[i].isAccepted===true){
+                    number_persion++
+                }
+            }
+            if (parseInt(number_persion)===parseInt(event[0].max)) {
+                await EventService.update(
+                    { _id: event_id },
+                    {  status: true}
+                 )
+            }
+            return res.json({msg: "OK"})
         }
         else {
             return res.json({msg:"User is not permission"})
