@@ -98,6 +98,9 @@ const accept = async(req,res) => {
                 if(parseInt(participantList[i].user)===parseInt(user_id) && (parseInt(number_persion)<parseInt(event[0].max))){
                     participantList[i].isAccepted = true
                 }
+                else {
+                    return res.json({msg: "You cant accpet more than max number persion"})
+                }
             }
             await EventService.update(
                 { _id: event_id },
