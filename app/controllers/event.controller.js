@@ -48,7 +48,6 @@ const get = async(req,res) => {
         page = parseInt(page);
         limit = parseInt(limit);
         const result = await EventService.read(page,limit,filter)
-        console.log(result)
         const totalItems = await EventService.getTotalNumber(filter);
         return res.json({result: result, totalItems: totalItems})
     }
@@ -86,7 +85,9 @@ const accept = async(req,res) => {
                 if (participantList[i].isAccepted===true){
                     number_persion++
                 }
-                if(parseInt(participantList[i].user)===parseInt(user_id) && number_persion<event[0].max){
+                if (parseInt(number_persion)<parseInt(event[0].max)) console.log("true")
+                else {console.log("false")}
+                if(parseInt(participantList[i].user)===parseInt(user_id) && (parseInt(number_persion)<parseInt(event[0].max))){
                     participantList[i].isAccepted = true
                 }
             }
