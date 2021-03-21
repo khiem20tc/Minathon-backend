@@ -119,12 +119,14 @@ const accept = async(req,res) => {
             for (i=0;i<participantList.length;i++) {
                 // if (parseInt(number_persion)<parseInt(event[0].max)) console.log("true")
                 // else {console.log("false")}
+                // console.log(participantList[i].user)
+                // console.log(user_id)
                 if(parseInt(participantList[i].user)===parseInt(user_id) && (parseInt(number_persion)<parseInt(event[0].max))){
                     participantList[i].isAccepted = true
                 }
-                else {
-                    return res.json({msg: "You cant accpet more than max number persion"})
-                }
+                // else {
+                //     return res.json({msg: "You cant accpet more than max number persion"})
+                // }
             }
             await EventService.update(
                 { _id: event_id },
@@ -144,7 +146,7 @@ const accept = async(req,res) => {
                     {  status: true}
                  )
             }
-            return res.json({msg: "OK"})
+            return res.json({msg: "Done. Please check your result!"})
         }
         else {
             return res.json({msg:"User is not permission"})
@@ -188,7 +190,6 @@ const getMyListEvent = async(req,res) => {
             let today = new Date()
             if ((parseInt(today.getDate()) - parseInt(d.getDate()) < 1) && ((parseInt(today.getHours()) - parseInt(event[0].time)) < 1) ){
                         let participantList
-                        //console.log("true")
                         participantList = event[0].participant_subschema
                         let j
                         for(j=0;j<event[0].participant_subschema.length;j++){
