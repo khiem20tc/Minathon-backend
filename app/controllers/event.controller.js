@@ -228,7 +228,7 @@ const getMyListEvent = async(req,res) => {
             }
             
         }
-        return res.json(final_event)
+        return res.json({final_event,totalItems: final_event.length})
     }
     catch (err) {
         return res.json({err})
