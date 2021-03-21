@@ -21,6 +21,7 @@ const read = async(page,limit,filter) => {
     let new_result = []
     for (i=0;i<result.length;i++){
         new_result.push({
+            _id: result[i]._id,
             date: result[i].date,
             time: result[i].time,
             address: result[i].address,
