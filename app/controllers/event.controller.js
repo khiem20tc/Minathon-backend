@@ -107,7 +107,7 @@ const accept = async(req,res) => {
         const event_id = Types.ObjectId(req.params.id)
         const user_id = Types.ObjectId(req.query.user_id)
         const event = await EventService.readDetail(1,1,{_id: event_id})
-        if (parseInt(event[0].host) === parseInt(host_id)) {
+        if (parseInt(event[0].host._id) === parseInt(host_id)) {
             let participantList = event[0].participant_subschema
             let i
             let number_persion = 0
@@ -160,7 +160,7 @@ const remove = async(req,res) => {
         const host_id = Types.ObjectId(req.user.id)
         const event_id = Types.ObjectId(req.params.id)
         const event = await EventService.readDetail(1,1,{_id: event_id})
-        if (parseInt(event[0].host) === parseInt(host_id)) {
+        if (parseInt(event[0].host._id) === parseInt(host_id)) {
             await EventService.remove({_id: event_id})
             return res.json({msg:"Deleted this event"})
         }
@@ -208,7 +208,7 @@ const getMyListEvent = async(req,res) => {
                 if(event[0].participant_subschema[k]==user[0]._id)
                 isAccept = true
             }
-            if (event[0].host == id || isAccept)
+            if (event[0].host._id == id || isAccept)
             {
                 final_event.push(event_element[0])
             }
