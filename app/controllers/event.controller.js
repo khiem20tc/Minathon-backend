@@ -5,6 +5,7 @@ const { EventEntity, participant } = require('../models');
 const create = async(req,res) => {
     try {
     let {
+        place_id,
         date,
         time,
         address,
@@ -19,6 +20,7 @@ const create = async(req,res) => {
     const host = Types.ObjectId(req.user.id)
     let participant_subschema
     const event = {
+        place_id,
         date,
         time,
         address,
@@ -123,6 +125,9 @@ const accept = async(req,res) => {
                     number_persion++
                 }
             }
+            if(event[0].status===true || (parseInt(number_persion)>=parseInt(event[0].max))){
+                return res.json({msg: "You cant accpet more than max number persion"})
+            }
             for (i=0;i<participantList.length;i++) {
                 // if (parseInt(number_persion)<parseInt(event[0].max)) console.log("true")
                 // else {console.log("false")}
@@ -132,7 +137,7 @@ const accept = async(req,res) => {
                     participantList[i].isAccepted = true
                 }
                 // else {
-                //     return res.json({msg: "You cant accpet more than max number persion"})
+                //     return res.json({msg: "This user is not request your event"})
                 // }
             }
             await EventService.update(
@@ -153,7 +158,7 @@ const accept = async(req,res) => {
                     {  status: true}
                  )
             }
-            return res.json({msg: "Done. Please check your result!"})
+            return res.json({msg: "Done. Please check your result again"})
         }
         else {
             return res.json({msg:"User is not permission"})
@@ -209,7 +214,7 @@ const getMyListEvent = async(req,res) => {
                             )
                         }
                     }
-            console.log(user[0].myEvent[i])
+            //console.log(user[0].myEvent[i])
             let event_element = await EventService.readDetail(1,1,{_id: user[0].myEvent[i]})
             //console.log(event_element[0])
             let isAccept = false
@@ -226,6 +231,7 @@ const getMyListEvent = async(req,res) => {
             }
             else {
                 final_event.push({
+                    place_id: event_element[0].place_id,
                     _id: event_element[0]._id,
                     date: event_element[0].date,
             time: event_element[0].time,

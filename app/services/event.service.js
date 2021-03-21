@@ -21,6 +21,7 @@ const read = async(page,limit,filter) => {
     let new_result = []
     for (i=0;i<result.length;i++){
         new_result.push({
+            place_id: result[i].place_id,
             _id: result[i]._id,
             date: result[i].date,
             time: result[i].time,
@@ -84,6 +85,7 @@ const getDetailInfo = async (id) => {
                 })
             }
             new_event.push({
+                    place_id: event[i].place_id,
                     _id: event[i]._id,
                     status: event[i]._status,
                     date: event[i].date,

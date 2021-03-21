@@ -7,6 +7,9 @@ const participant = mongoose.Schema({
 }, {_id: false})
 
 const EventSchema = mongoose.Schema({
+    place_id: {
+        type: String
+    },
     date: {
         type: String,
         required: true
