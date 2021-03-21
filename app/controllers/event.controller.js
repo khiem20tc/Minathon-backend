@@ -215,6 +215,7 @@ const getMyListEvent = async(req,res) => {
             }
             else {
                 final_event.push({
+                    _id: event_element[0]._id,
                     date: event_element[0].date,
             time: event_element[0].time,
             address: event_element[0].address,
