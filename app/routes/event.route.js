@@ -16,9 +16,11 @@ router.get('/get', EventController.get)
 
 router.get('/getDetail', EventController.getDetail)
 
-router.put('/interact/:id', checkAuth, EventController.interact)
+//put
+router.post('/interact/:id', checkAuth, EventController.interact)
 
-router.put('/accept/:id', checkAuth, EventController.accept)
+//put
+router.post('/accept/:id', checkAuth, EventController.accept)
 
 router.delete('/delete/:id', checkAuth, EventController.remove)
 
