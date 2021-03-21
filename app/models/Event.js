@@ -1,7 +1,7 @@
 const mongoose = require('mongoose');
 
 const participant = mongoose.Schema({
-    user: {type: mongoose.Types.ObjectId, ref: "User", require: true},
+    user: {type: mongoose.Types.ObjectId, ref: "user", require: true},
     isAccepted: {type: Boolean, default: false},
     phoneNumber: {type: Number}
 }, {_id: false})
@@ -37,6 +37,7 @@ const EventSchema = mongoose.Schema({
     },
     host: {
         type: mongoose.Types.ObjectId,
+        ref: "user",
         required: true
     },
     hostNumberPhone: {
