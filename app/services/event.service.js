@@ -75,7 +75,7 @@ const getDetailInfo = async (id) => {
             let new_userInfo = []
             for (j=0;j<event[i].userInfo.length;j++){
                 new_userInfo.push({
-                    name: event[i].userInfo[j].firstName + event[i].userInfo[j].lastName,
+                    name: event[i].userInfo[j].firstName +" "+ event[i].userInfo[j].lastName,
                     aboutMe: event[i].userInfo[j].aboutMe,
                     avatar: event[i].userInfo[j].avatar
                 })
