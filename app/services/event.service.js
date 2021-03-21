@@ -12,6 +12,7 @@ const create = async(data) => {
 const read = async(page,limit,filter) => {
     try{
     let result = await EventEntity.find(filter)
+        .populate('host')
         .sort({_id: -1})
         .skip(page * limit - limit)
         .limit(limit)
