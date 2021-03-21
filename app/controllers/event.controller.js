@@ -81,6 +81,13 @@ const interact = async(req,res) => {
         const user_id = Types.ObjectId(req.user.id)
         const event_id = Types.ObjectId(req.params.id)
         const event = await EventService.readDetail(1,1,{_id: event_id})
+        let i  
+       
+        for(i=0;i<event[0].participant_subschema.length;i++){
+            if(parseInt(event[0].participant_subschema[i].user)==parseInt(user_id)){
+                return res.json({msg: "You requested this event and cant request duplicate"})
+            }
+        }
         if (event[0].status===false){
         await EventService.update(
             { _id: event_id },
@@ -202,13 +209,17 @@ const getMyListEvent = async(req,res) => {
                             )
                         }
                     }
+            console.log(user[0].myEvent[i])
             let event_element = await EventService.readDetail(1,1,{_id: user[0].myEvent[i]})
+            //console.log(event_element[0])
             let isAccept = false
             let k
             for (k=0;k<event[0].participant_subschema.length;k++){
                 if(event[0].participant_subschema[k]==user[0]._id)
                 isAccept = true
             }
+            // console.log(event[0].host._id)
+            // console.log(id)
             if (event[0].host._id == id || isAccept)
             {
                 final_event.push(event_element[0])
